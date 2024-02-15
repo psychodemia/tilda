@@ -8,23 +8,41 @@ function getInputData(name) {
     });
 }
 
+function agreeCall() {
+    // Получаем все элементы с классом "t-checkbox__indicator"
+    let indicators = document.querySelectorAll('.t-checkbox__indicator');
 
-  function setStorage() {
-  
+    // Перебираем найденные элементы
+    for (let i = 0; i < indicators.length; i++) {
+        // Получаем псевдоэлемент ::after текущего элемента
+        let afterPseudoElement = window.getComputedStyle(indicators[i], '::after');
+
+        // Проверяем, существует ли псевдоэлемент ::after
+        if (afterPseudoElement.content !== 'none') {
+            // Если псевдоэлемент ::after существует, возвращаем 'yes'
+            return true;
+        }
+    }
+    // Если ни у одного элемента нет псевдоэлемента ::after, возвращаем 'no'
+    return false;
+}
+
+
+
+function setStorage() {
     // Получение всех параметров из адресной строки
-    var queryParams = new URLSearchParams(window.location.search);
+    let queryParams = new URLSearchParams(window.location.search);
 
-    // Формирование объекта с данными
-    var data = {
-        phone: {{tilda_form_phone}}, //[data-tilda-rule="phone"]
-        email: {{tilda_form_email}},
-        name: {{tilda_form_name}},
-        promocode: {{tilda_form_promocode}},
-        formname: {{tilda_form_fname}},
-        agree_call: {{tilda_form_agreecall}},
-        course: {{tilda_form_course}}
+    let data = {
+        phone: getInputData('input[data-tilda-rule="phone"]'),
+        email: getInputData('input[data-tilda-rule="email"]'),
+        name: getInputData('input[data-tilda-rule="name"]'),
+        promocode: getInputData('input[name="promocode"]'),
+        formname: getInputData('input[name="tildaspec-formname"]'),
+        agree_call: agreeCall(),
+        course: getInputData('input[name="course"]')
     };
-  if({{Категория страницы}} === 'free') data.salecourse = {{tilda_form_salecourse}};
+  if(getInputData('input[name="lead_form_type"]') === 'free') data.salecourse = getInputData('input[name="salecourse"]');
   if (queryParams.get('utm_source')) data.utm_source = queryParams.get('utm_source');
   if (queryParams.get('utm_term')) data.utm_source = queryParams.get('utm_term');
   if (queryParams.get('utm_medium')) data.utm_source = queryParams.get('utm_medium');
@@ -34,6 +52,12 @@ function getInputData(name) {
 
     // Сохранение данных в sessionStorage
     sessionStorage.setItem('formData', JSON.stringify(data));
+    console.log(data)
 }
-setStorage();
+
+document.addEventListener('submit', function(event) {
+    if (event.event && event.event.startsWith('submit_form')) {
+        setStorage();
+    }
+});
   
