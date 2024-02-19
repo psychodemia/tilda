@@ -8,7 +8,6 @@ function getInputData(name) {
 	});
 }
 
-
 function setCookie() {
 	let phone = getInputData('input[data-tilda-rule="phone"]')
 	let time = Date.now()
@@ -17,8 +16,6 @@ function setCookie() {
 }
 
 document.addEventListener("form_start", function(event) {
-
 		setCookie();
-	
 	console.log("Cookie lead_id установлена" );
 });
