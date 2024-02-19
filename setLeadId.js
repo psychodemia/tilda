@@ -16,7 +16,7 @@ function setCookie() {
 	document.cookie = "lead_id=" + hash + "; path=/; domain=." + location.hostname.replace(/^www\./i, "")
 }
 
-document.addEventListener(event.event.startsWith('submit_form'), function(event) {
+document.addEventListener("form_start", function(event) {
 
 		setCookie();
 	
