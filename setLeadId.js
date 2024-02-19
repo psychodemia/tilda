@@ -16,10 +16,9 @@ function setCookie() {
 	document.cookie = "lead_id=" + hash + "; path=/; domain=." + location.hostname.replace(/^www\./i, "")
 }
 
-document.addEventListener('submit', function(event) {
-	if (event.event && event.event.startsWith('submit_form')) {
+document.addEventListener(event.event.startsWith('submit_form'), function(event) {
+
 		setCookie();
-	}
 	
 	console.log("Cookie lead_id установлена" );
 });
